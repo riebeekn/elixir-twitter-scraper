@@ -1,18 +1,6 @@
 defmodule TwitterFeed do
-  @moduledoc """
-  Documentation for TwitterFeed.
-  """
 
-  @doc """
-  Hello world.
+  defdelegate get_tweets(handle, pages_to_get \\ 1, start_after_tweet \\ 0),
+      to: TwitterFeed.Scraper, as: :scrape
 
-  ## Examples
-
-      iex> TwitterFeed.hello
-      :world
-
-  """
-  def hello do
-    :world
-  end
 end
