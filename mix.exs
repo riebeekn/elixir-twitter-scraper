@@ -26,7 +26,8 @@ defmodule TwitterFeed.Mixfile do
 
   defp deps do
     [
-      {:excoveralls, "~> 0.8", only: :test}
+      {:excoveralls, "~> 0.8", only: :test},
+      {:httpoison, "~> 1.0"}
     ]
   end
 end
