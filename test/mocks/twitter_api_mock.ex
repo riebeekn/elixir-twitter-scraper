@@ -6,6 +6,10 @@ defmodule TwitterFeed.Mocks.TwitterApiMock do
   end
 
   def get_home_page(_handle) do
-    {:ok, %{status_code: 200, body: "This handle looks good!"}}
+    body =
+      Path.expand("#{File.cwd!}/test/data/twitter.html")
+      |> File.read!
+
+    {:ok, %{status_code: 200, body: body}}
   end
 end

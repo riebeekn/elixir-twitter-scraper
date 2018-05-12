@@ -27,7 +27,10 @@ defmodule TwitterFeed.Mixfile do
   defp deps do
     [
       {:excoveralls, "~> 0.8", only: :test},
-      {:httpoison, "~> 1.0"}
+      {:httpoison, "~> 1.0"},
+      {:floki, "~> 0.20.0"},
+      {:publicist, "~> 1.1"},
+      {:ex_doc, "~> 0.16", only: :dev, runtime: false}
     ]
   end
 end

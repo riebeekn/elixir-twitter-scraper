@@ -3,10 +3,13 @@ defmodule TwitterFeed.Scraper do
 
   @twitter_api Application.get_env(:twitter_feed, :twitter_api)
 
+  alias TwitterFeed.Parser
+
   def scrape(handle, _pages_to_get, _start_after_tweet) do
     case @twitter_api.get_home_page(handle) do
       {:ok, %{status_code: 200, body: body}} ->
         body
+        |> Parser.parse_tweets()
       {:ok, %{status_code: 404}} ->
         return_404()
     end
