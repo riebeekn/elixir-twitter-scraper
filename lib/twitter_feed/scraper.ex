@@ -5,7 +5,7 @@ defmodule TwitterFeed.Scraper do
 
   alias TwitterFeed.Parser
 
-  def scrape(handle, _pages_to_get, _start_after_tweet) do
+  def scrape(handle, _start_after_tweet) do
     case @twitter_api.get_home_page(handle) do
       {:ok, %{status_code: 200, body: body}} ->
         body
