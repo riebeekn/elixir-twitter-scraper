@@ -5,11 +5,21 @@ defmodule TwitterFeed.Scraper do
 
   alias TwitterFeed.Parser
 
-  def scrape(handle, _start_after_tweet) do
+  def scrape(handle, 0) do
     case @twitter_api.get_home_page(handle) do
       {:ok, %{status_code: 200, body: body}} ->
         body
-        |> Parser.parse_tweets()
+        |> Parser.parse_tweets(:html)
+      {:ok, %{status_code: 404}} ->
+        return_404()
+    end
+  end
+
+  def scrape(handle, start_after_tweet) do
+    case @twitter_api.get_tweets(handle, start_after_tweet) do
+      {:ok, %{status_code: 200, body: body}} ->
+        body
+        |> Parser.parse_tweets(:json)
       {:ok, %{status_code: 404}} ->
         return_404()
     end

@@ -30,7 +30,8 @@ defmodule TwitterFeed.Mixfile do
       {:httpoison, "~> 1.0"},
       {:floki, "~> 0.20.0"},
       {:publicist, "~> 1.1"},
-      {:ex_doc, "~> 0.16", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.16", only: :dev, runtime: false},
+      {:poison, "~> 3.1"}
     ]
   end
 end

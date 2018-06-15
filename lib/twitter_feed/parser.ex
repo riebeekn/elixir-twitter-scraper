@@ -3,9 +3,22 @@ defmodule TwitterFeed.Parser do
 
   alias TwitterFeed.Tweet
 
-  def parse_tweets(html) do
+  def parse_tweets(html, :html) do
     tweet_html =
       html
+      |> Floki.find(".tweet")
+
+    Enum.map(tweet_html, fn(x) -> parse_tweet(x) end)
+  end
+
+  def parse_tweets(json, :json) do
+    parsed_json =
+      json
+      |> Poison.Parser.parse!()
+
+    tweet_html =
+      parsed_json["items_html"]
+      |> String.trim()
       |> Floki.find(".tweet")
 
     Enum.map(tweet_html, fn(x) -> parse_tweet(x) end)
