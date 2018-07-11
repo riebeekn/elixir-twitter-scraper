@@ -3,6 +3,38 @@ defmodule TwitterFeed.ParserTest do
 
   alias TwitterFeed.Parser
 
+  test "parsing of min position from json response" do
+    assert Parser.parse_json_min_position("33") == 33
+  end
+
+  test "parsing of min position from json response should return 0 when the page has no tweets" do
+    assert Parser.parse_json_min_position(nil) == 0
+  end
+
+  test "parsing of has more items when there are no more items" do
+    html_snippet = "<div class=\"timeline-end has-items \">"
+
+    assert Parser.parse_html_has_more_items(html_snippet) == false
+  end
+
+  test "parsing of has more items when there are more items" do
+    html_snippet = "<div class=\"timeline-end has-items has-more-items\">"
+
+    assert Parser.parse_html_has_more_items(html_snippet) == true
+  end
+
+  test "parsing of min position from html response" do
+    html_snippet = "<div class=\"stream-container\" data-min-position=\"33\">"
+
+    assert Parser.parse_html_min_position(html_snippet) == 33
+  end
+
+  test "parsing of min position from html response should return 0 when the page has no tweets" do
+    html_snippet = "<div class=\"stream-container\" data-min-position=\"\">"
+
+    assert Parser.parse_html_min_position(html_snippet) == 0
+  end
+
   test "parsing of display_name" do
     html_snippet = "<div class=\"tweet\" data-name=\"lola\"></div>"
 

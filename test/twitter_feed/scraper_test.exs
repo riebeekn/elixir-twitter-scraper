@@ -10,10 +10,13 @@ defmodule TwitterFeed.ScraperTest do
   end
 
   test "scraping the first page of tweets" do
-    tweets = Scraper.scrape("someTwitterHandle", 0)
+    feed = Scraper.scrape("someTwitterHandle", 0)
 
-    assert Enum.count(tweets) == 20
-    first_tweet = tweets |> hd()
+    assert feed.last_tweet_retrieved == 948759471467118592
+    assert feed.more_tweets_exist == true
+
+    assert Enum.count(feed.tweets) == 20
+    first_tweet = feed.tweets |> hd()
     assert first_tweet.handle_id == 17055465
     assert first_tweet.tweet_id == 989880547399774209
     assert first_tweet.user_id == 17055465
@@ -24,7 +27,7 @@ defmodule TwitterFeed.ScraperTest do
     assert first_tweet.image_url == "https://pbs.twimg.com/media/DbzDG7yU8AAfANg.jpg"
     assert first_tweet.retweet == false
 
-    last_tweet = tweets |> List.last()
+    last_tweet = feed.tweets |> List.last()
     assert last_tweet.handle_id == 17055465
     assert last_tweet.tweet_id == 948266826315829248
     assert last_tweet.user_id == 3367318323
@@ -37,10 +40,13 @@ defmodule TwitterFeed.ScraperTest do
   end
 
   test "scraping the second page of tweets" do
-    tweets = Scraper.scrape("someTwitterHandle", 1234)
+    feed = Scraper.scrape("someTwitterHandle", 1234)
 
-    assert Enum.count(tweets) == 19
-    first_tweet = tweets |> hd()
+    assert feed.last_tweet_retrieved == 915946122274791425
+    assert feed.more_tweets_exist == true
+
+    assert Enum.count(feed.tweets) == 19
+    first_tweet = feed.tweets |> hd()
     assert first_tweet.handle_id == 17055465
     assert first_tweet.tweet_id == 948736761848565766
     assert first_tweet.user_id == 2189503302
@@ -51,7 +57,7 @@ defmodule TwitterFeed.ScraperTest do
     assert first_tweet.image_url == ""
     assert first_tweet.retweet == true
 
-    last_tweet = tweets |> List.last()
+    last_tweet = feed.tweets |> List.last()
     assert last_tweet.handle_id == 17055465
     assert last_tweet.tweet_id == 915946122274791425
     assert last_tweet.user_id == 17055465

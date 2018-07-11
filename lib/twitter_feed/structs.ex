@@ -1,3 +1,20 @@
+defmodule TwitterFeed.Feed do
+  @moduledoc """
+  Struct representing a twitter feed.
+
+  ## Fields
+
+  - last_tweet_retrieved: the id of the last tweet retrieved.
+  - more_tweets_exist: true | false indicator of whether there are more tweets.
+  - tweets: [%TwitterFeed.Tweet] - a list of the tweets retrieved.
+  """
+  defstruct [
+    last_tweet_retrieved: 0,
+    more_tweets_exist: false,
+    tweets: []
+  ]
+end
+
 defmodule TwitterFeed.Tweet do
   @moduledoc """
   Struct representing a tweet.

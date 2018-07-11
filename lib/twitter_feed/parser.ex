@@ -1,14 +1,18 @@
 defmodule TwitterFeed.Parser do
   @moduledoc false
 
-  alias TwitterFeed.Tweet
+  alias TwitterFeed.{ Feed, Tweet }
 
   def parse_tweets(html, :html) do
     tweet_html =
       html
       |> Floki.find(".tweet")
 
-    Enum.map(tweet_html, fn(x) -> parse_tweet(x) end)
+    %Feed {
+      last_tweet_retrieved: html |> parse_html_min_position(),
+      more_tweets_exist: html |> parse_html_has_more_items,
+      tweets: Enum.map(tweet_html, fn(x) -> parse_tweet(x) end)
+    }
   end
 
   def parse_tweets(json, :json) do
@@ -21,7 +25,11 @@ defmodule TwitterFeed.Parser do
       |> String.trim()
       |> Floki.find(".tweet")
 
-    Enum.map(tweet_html, fn(x) -> parse_tweet(x) end)
+    %Feed {
+      last_tweet_retrieved: parsed_json["min_position"] |> parse_json_min_position(),
+      more_tweets_exist: parsed_json["has_more_items"],
+      tweets: Enum.map(tweet_html, fn(x) -> parse_tweet(x) end)
+    }
   end
 
   ##################### PRIVATE FUNCTIONS #####################
@@ -43,6 +51,33 @@ defmodule TwitterFeed.Parser do
   end
 
   use Publicist
+  defp parse_json_min_position(min_position) do
+    if (min_position == nil) do
+      0
+    else
+      min_position |> String.to_integer()
+    end
+  end
+
+  defp parse_html_has_more_items(html_response) do
+    html_response
+    |> Floki.find(".has-more-items")
+    |> Enum.count() == 1
+  end
+
+  defp parse_html_min_position(html_response) do
+    min_position = html_response
+    |> Floki.find(".stream-container")
+    |> Floki.attribute("data-min-position")
+    |> hd()
+
+    if (min_position |> String.length() == 0) do
+      0
+    else
+      String.to_integer(min_position)
+    end
+  end
+
   defp parse_display_name(tweet_html) do
     tweet_html
     |> Floki.attribute("data-name")
