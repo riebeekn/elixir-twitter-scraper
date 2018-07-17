@@ -22,7 +22,7 @@ defmodule TwitterFeed.TwitterApi.UrlBuilder do
     @timeline_path <> "?" <>
     @static_parameter_1 <> @query_seperator <>
     @static_parameter_2 <> @query_seperator <>
-    @dynamic_parameter <> "=" <> Integer.to_string(from_position) <> @query_seperator <>
+    @dynamic_parameter <> "=#{from_position}" <> @query_seperator <>
     @static_parameter_3
   end
 end
