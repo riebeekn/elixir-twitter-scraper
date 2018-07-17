@@ -3,6 +3,12 @@ defmodule TwitterFeed.ScraperTest do
 
   alias TwitterFeed.{ Scraper }
 
+  test "scraping will fail when start_after_tweet < 0" do
+    {:error, reason} = Scraper.scrape("someTwitterHandle", -1)
+
+    assert reason =~ "invalid start_after_tweet argument, can't be < 0"
+  end
+
   test "scraping on non-existant handle will return 404" do
     {:error, reason} = Scraper.scrape(:non_existant_handle, 0)
 
